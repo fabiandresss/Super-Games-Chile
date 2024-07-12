@@ -44,19 +44,19 @@
                         <td>
                             | Fecha de Venta |
                             <br>
-                            | {{ boleta.fecha_venta|formatear_fecha }} |
+                            | {{ boleta.fecha_venta}} |
                         </td>
                         <br>
                         <td>
                              Fecha de Despacho 
                             <br>
-                            | {{ boleta.fecha_despacho|formatear_fecha }} |
+                            | {{ boleta.fecha_despacho}} |
                         </td>
                         <br>
                         <td>
                             | Fecha de Entrega |
                             <br>
-                            | {{ boleta.fecha_entrega|formatear_fecha }} |
+                            | {{ boleta.fecha_entrega}} |
                         </td>
                     </tr>
                 </table>
@@ -115,7 +115,7 @@
                             <td>
                                 <label for="">Precio sin IVA</label>
                             </td>
-                            <td>{{boleta.monto_sin_iva | formatear_dinero}} </td>
+                            <td>{{boleta.monto_sin_iva}} </td>
                         </tr>
                         <tr>
                             <td></td>
@@ -127,7 +127,7 @@
                             <td>
                                 <label for="">Valor del IVA (19%)</label>
                             </td>
-                            <td>{{boleta.iva | formatear_dinero}} </td>
+                            <td>{{boleta.iva}} </td>
                         </tr>
                         <tr>
                             <td></td>
@@ -139,7 +139,7 @@
                             <td>
                                 <label for="">Total a pagar</label>
                             </td>
-                            <td>{{boleta.total_a_pagar | formatear_dinero }} </td>
+                            <td>{{boleta.total_a_pagar}} </td>
                         </tr>
                     </tfoot>
                 </table>

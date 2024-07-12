@@ -35,17 +35,18 @@
                           onclick="event.preventDefault(); document.getElementById('id_imagen').click();">
                       Seleccionar imagen
                   </button>
-                  <!-- Campo oculto para la carga de la imagen -->
-                  {{ form_perfil.imagen }}
+              
               </div>
           </div>
       </div>
   </div>
 
+
+
     <!-- AREA DE BOTONES -->
     <div class="mt-2 text-center">
 
-      <button type="submit"> Actualizar mis datos </button>
+      <button type="submit" class="btn btn-success"> Actualizar mis datos </button>
 
     </div>
 
@@ -53,6 +54,8 @@
 
 {% endblock content %}
 
+<!-- Campo oculto para la carga de la imagen -->
+{{ form_perfil.imagen }}
 {% block script %}
   <script src="{% static 'core/js/misdatos.js' %}"></script>
 {% endblock script %}
