@@ -1,0 +1,46 @@
+h1 {
+  font-size: x-large;
+  color: hsl(0, 0%, 0%) !important;
+  font-weight: bolder;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#ficha_titulo{
+  color: black;
+}
+
+.img-ficha-td {
+  text-align: center;
+}
+
+th {
+  vertical-align: top;
+  background-color: lightgray !important;
+}
+
+input, textarea, select {
+  border-color: darkgray !important; /* Cambia "red" al color deseado */
+}
+
+.custom-btn {
+  background-color: #09ff00;
+  /* Color de fondo */
+  color: #ffffff;
+  /* Color del texto */
+  border-color: #09ff00;
+  /* Color del borde */
+}
+
+.custom-btn:hover {
+  background-color: #1faf1a;
+  /* Color de fondo al pasar el ratón */
+  border-color: #1faf1a;
+  /* Color del borde al pasar el ratón */
+  color: #ffffff;
+}
+
+/* Descomenta el selector div a continuación si quieres ver la diagramación de tu página */
+/* div {
+  border: 1px solid blue;
+} */

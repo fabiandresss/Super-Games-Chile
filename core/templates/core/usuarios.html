@@ -1,0 +1,118 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    
+<h1>Administración de usuarios</h1>
+  <form id="form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row">
+        <!-- AREA DE DATOS BASICOS: username, nombre, apellidos, correo y contraseñas -->
+        <div class="col-sm-12 col-md-4">
+            <h2>Datos Básicos</h2>
+            {{ form_usuario|as_bootstrap_form:'help_text_visible=False' }}
+        </div>
+  
+        <!-- AREA DE DATOS DE PERFIL: rut, dirección y subscrito -->
+        <div class="col-sm-12 col-md-5">
+            <h2>Datos de Perfil</h2>
+            {{ form_perfil|as_bootstrap_form }}
+        </div>
+
+                  <!-- AREA DE CUADRO DE IMAGEN: Imagen de perfil (VER COMENTARIO "CUADRO DE IMAGEN" en script.js) -->
+    {% if form_perfil.imagen.value %}
+    <img id="cuadro-imagen" src="/media/{{ form_perfil.imagen.value }}">
+  {% else %}
+    <img id="cuadro-imagen" src="{% static 'core/img/sin-imagen.png' %}">
+  {% endif %}
+      
+  </div>
+
+  <!-- AREA DE BOTONES -->
+  <div class="mt-2 text-center">
+    
+    <button type="submit" class="btn btn-primary"> Guardar </button>
+
+    <a href="{% url 'usuarios' 'crear' '0' %}" class="btn btn-primary"> Nuevo </a>
+
+    <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
+    <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();" class="btn btn-primary"> Seleccionar imagen </button>  
+
+    {% if form_usuario.instance.id %}
+      <a class="btn btn-primary" href="{% url 'usuarios' 'eliminar' form_usuario.instance.id %}"> Eliminar </a>
+    {% endif %}
+  
+  </div>
+
+          </div>
+      </div>
+  </div>
+  </form>
+
+  <!-- AREA DE TABLA DE USUARIOS -->
+
+  {% comment %} 
+  
+  {% if usuarios %} 
+  
+  {% endcomment %}
+
+  <table id="tabla-principal" class="table table-hover">
+    <thead>
+      <tr>
+        <th> ID </th>
+        <th> Cuenta </th>
+        <th> Tipo usuario </th>
+        <th> Nombre </th>
+        <th> Apellidos </th>
+        <th> Correo </th>
+        <th> RUT </th>
+        <th> Subscrito </th>
+        <th> Imagen </th>
+        <th> Acciones </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.perfil.tipo_usuario }}</td>
+          <td>{{ usuario.first_name }}</td>
+          <td>{{ usuario.last_name }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.perfil.rut }}</td>
+          <td>{% if usuario.perfil.subscrito %} Sí {% else %} No {% endif %}</td>
+          <td>
+            <img src="/media/{{ usuario.perfil.imagen }}" class="usuario-sm" alt="">
+          </td>
+          <td>
+            <div class="btn-group">
+              <a href="{% url 'usuarios' 'actualizar' usuario.id %}" class="btn btn-primary btn-sm"> Editar </a>
+              <a href="{% url 'usuarios' 'eliminar' usuario.id %}" class="btn btn-danger btn-sm"> Eliminar </a>
+              <form action="{% url 'cambiar_password' %}" method="post" id="form_{{ usuario.username }}">
+                {% csrf_token %}
+                <input type="hidden" id="username" name="username" value="{{ usuario.username }}">
+                <button class="btn btn-info btn-sm" id="id_generar_password" onclick="document.getElementById('form_{{ usuario.username }}').submit();"> Contraseña </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% comment %} 
+  
+  {% endif %} 
+  
+  {% endcomment %}
+    
+{% endblock content %}
+    
+{% block script %}
+  <script src="{% static 'core/js/usuarios.js' %}"></script>
+{% endblock script %}
+    

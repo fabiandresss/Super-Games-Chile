@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+
+    <h1 id="ficha_titulo">Ficha del producto</h1>
+
+    <form method="post" id="formulario-ficha">
+        {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-7 col-lg-4" style="height: 500px;">
+                <img class="ficha_foto" src="/media/{{ imagen }}" alt="Logo">
+            </div>
+            <div class="col-sm-12 col-md-5 col-xl-6">
+                <div class="ficha_titulo">
+                    {{ nombre }}
+                </div>
+                <div class="ficha_disponible">
+                    {{ html_estado|safe }}
+                </div>
+                <div class="ficha_precio">
+                    <div class="lead text-danger">
+                        <span class="sale-real-price fw-bold">
+                            {{ html_precio|safe }}
+                        </span>
+                    </div>
+                    <div class="descripcion-prod">
+                        <b>Descripción:</b>
+                        {{ descripcion }}
+                    </div>
+                    <div class="stock-productos"><b>{{ html_stock|safe }}</b></div>
+
+                    <div>
+                        <input type="hidden" id="accion">
+                        <a href="{% url 'comprar_ahora' %}" class="btn btn-primary ancho-160px mt-4"> 
+                            Comprar ahora 
+                        </a>
+                        <a href="{% url 'agregar_producto_al_carrito' id %}" class="btn btn-secondary ancho-160px mt-4"> 
+                            Agregar al carrito 
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+    </div>
+    </form>
+
+   
+
+
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'core/js/ficha.js' %}"></script>
+{% endblock script %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+{% endblock style %}

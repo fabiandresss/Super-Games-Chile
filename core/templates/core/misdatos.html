@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    
+  <form id="form" method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="row">
+      <!-- AREA DE DATOS BASICOS: username, nombre, apellidos, correo y contraseñas -->
+      <div class="col-sm-12 col-md-4">
+          <h2>Datos Básicos</h2>
+          {{ form_usuario|as_bootstrap_form:'help_text_visible=False' }}
+      </div>
+
+      <!-- AREA DE DATOS DE PERFIL: rut, dirección y subscrito -->
+      <div class="col-sm-12 col-md-5">
+          <h2>Datos de Perfil</h2>
+          {{ form_perfil|as_bootstrap_form }}
+      </div>
+
+      <!-- AREA DE IMAGEN DE PERFIL -->
+      <div class="col-sm-12 col-md-3 text-center">
+          <h2>Imagen de Perfil</h2>
+          <div class="row">
+              <!-- AREA DE CUADRO DE IMAGEN: Muestra la Imagen de perfil -->
+              <div class="col-sm-12" style="height: 220px">
+                  <img id="cuadro-imagen" src="{% static 'core/img/sin-imagen.png' %}">
+              </div>
+              <div class="col-sm-12 mt-3">
+                  <!-- Botón para "Seleccionar imagen" -->
+                  <button type="button" class="btn btn-secondary btn-block"
+                          onclick="event.preventDefault(); document.getElementById('id_imagen').click();">
+                      Seleccionar imagen
+                  </button>
+                  <!-- Campo oculto para la carga de la imagen -->
+                  {{ form_perfil.imagen }}
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <!-- AREA DE BOTONES -->
+    <div class="mt-2 text-center">
+
+      <button type="submit"> Actualizar mis datos </button>
+
+    </div>
+
+  </form>
+
+{% endblock content %}
+
+{% block script %}
+  <script src="{% static 'core/js/misdatos.js' %}"></script>
+{% endblock script %}

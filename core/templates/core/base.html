@@ -1,0 +1,297 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Games Chile</title>
+
+    <!-- BLOQUE DE ESTILOS CSS COMPARTIDO POR TODAS LAS PAGINAS -->
+    <link type="image/x-icon" rel="shortcut icon" href="{% static 'core/img/faviconsg.png' %}" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'core/css/base.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'core/css/premio.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'core/css/page-layout.css' %}">
+    
+
+    <!-- 
+
+    INSTRUCCIONES PARA EL ALUMNO (ELIMINALO DESPUES DE LEERLO):
+      - PEGA AQUI TUS HOJAS DE ESTILO COMPARTIDAS
+
+    -->
+
+    <!-- BLOQUE DE ESTILOS CSS PERSONALIZADOS PARA CADA PAGINA -->
+    {% block stylesheet %}
+      
+    {% endblock stylesheet %}
+
+    <!-- BLOQUE DE JAVASCRIPT EN HEAD, PERSONALIZADOS PARA CADA PAGINA -->
+    {% block script-head %}
+      
+    {% endblock script-head %}
+
+</head>
+<body>
+
+            <!-- Ventana API Ropa-->
+            <div class="ventana-emergente" id="ventanaEmergente">
+              <span class="cerrar" onclick="cerrarVentana()">&times;</span>
+              <h2 id="h2-oferta-api">¡Oferta irresistible!</h2>
+              <p><a  id="text-oferta-api" href="{%url 'premio'%}">Por compras superiores a 20.000 participa por una prenda de Ropa.</a></p>
+          </div>
+  
+
+  <!-- BLOQUE DE MENU SUPERIOR COMPARTIDO POR TODAS LAS PAGINAS -->
+  <nav class="navbar navbar-expand-lg bg-body-secondary pagelayout-1">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{% url 'inicio' %}">
+        <img src="{% static 'core/img/faviconsg.png' %}" class="logo-menu-superior" style="height: 40px;;" alt="">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+          aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}"> Inicio </a>
+          </li>
+
+          {% if not user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'registrarme' %}"> Registrarme </a>
+            </li>
+          {% endif %}
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'nosotros' %}"> Nosotros </a>
+          </li>
+
+          {% if user.is_authenticated and user.is_staff and user.is_active or user.is_authenticated and user.is_superuser and user.is_active %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" 
+                  aria-expanded="false">
+                Administrar tienda
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'productos' 'crear' '0' %}"> Productos </a></li>
+                <li><a class="dropdown-item" href="{% url 'usuarios' 'crear' '0' %}"> Usuarios </a></li>
+                <li><a class="dropdown-item" href="{% url 'bodega' %}"> Bodega </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'ventas' %}"> Ventas </a></li>
+                {% if user.is_authenticated and user.is_superuser and user.is_active %}
+                <li><a class="dropdown-item" href="/admin"> Administrador de Django </a></li>
+                {% endif %}
+              </ul>
+            </li>
+          {% endif %}
+
+          {% if not user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'ingresar' %}"> Ingresar </a>
+            </li>
+          {% endif %}
+
+          {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" 
+                  aria-expanded="false" href="{% url 'ingresar' %}">
+                
+                {% if user.is_superuser %}
+                  <span class="text-danger fw-bold">
+                {% elif user.is_staff %}
+                  <span class="text-success fw-bold">
+                {% else %}
+                  <span>
+                {% endif %}
+                  {{ first_name }} {{ last_name }}
+                  {% if user.perfil.subscrito %}
+                    (premium)
+                  {% endif %}
+                </span>
+
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'misdatos' %}"> Mis datos </a></li>
+                <li><a class="dropdown-item" href="{% url 'mipassword' %}"> Cambiar mi contraseña </a></li>
+                {% if not user.is_staff and not user.is_superuser %}
+                  <li><a class="dropdown-item" href="{% url 'miscompras' %}"> Mis compras </a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'salir' %}"> Salir </a></li>
+              </ul>
+            </li>
+          {% endif %}
+          
+          {% if mostrar_carrito %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'carrito' %}">
+                <img src="{% static 'core/img/carrito.png' %}" width="32px">
+                {{ cantidad_productos }}
+              </a>
+            </li>
+          {% endif %}
+
+        </ul>
+
+
+        <!-- FORMULARIO DE BUSQUEDA -->
+        <form method="post" action="{% url 'inicio' %}" class="d-flex" role="search">
+          {% csrf_token %}
+
+          <!-- Caja de texto para escribir lo que el usuario desea buscar. Este
+            campo se recupera en la VISTA por medio de request.POST.get('buscar') -->
+          <input class="form-control me-2" type="search" placeholder="Buscar productos" 
+              aria-label="Search" id="buscar" id="buscar" name="buscar">
+          
+          <button class="btn btn-outline-success" type="submit"> Buscar </button>
+        </form>
+
+      </div>
+    </div>
+  </nav>
+  <!-- BLOQUE DE CONTENIDO PERSONALIZADO DE CADA PAGINA DEL SITIO WEB -->
+  <div class="content m-3 pagelayout-2">
+    {% block content %}
+    
+    {% endblock content %}
+  </div>
+
+  <!-- BLOQUE DE PIE DE PAGINA COMPARTIDO POR TODAS LAS PAGINAS -->
+  <footer class="menu-inferior pagelayout-3">
+      <footer class="bg-light text-dark pt-5 pb-4">
+        <div class="container text-center text-md-start">
+            <div class="row justify-content-around">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Desarrollado por:</h5>
+                    <hr class="mb-4">
+                    <ul class="list-unstyled">
+                        <li class="footer_text">
+                            <a href="https://cl.linkedin.com/in/dario-huerta-soto-5834a2279">
+                                <i class="bi bi-linkedin"></i> Dario Huerta
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https://cl.linkedin.com/in/fabian-armijo-521049233">
+                                <i class="bi bi-linkedin"></i> Fabián Armijo
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https://cl.linkedin.com/in/fabian-escobedo-335a00295">
+                                <i class="bi bi-linkedin"></i> Fabián Escobedo
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="#">
+                                <i class="bi bi-linkedin"></i> Kevin Álvarez
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-primary">¿Buscas ayuda?</h5>
+                    <hr class="mb-4">
+                    <ul class="list-unstyled">
+                        <li class="footer_text">
+                            <a href="/Usuario anonimo/registro.html" class="text-dark">
+                                <i class="bi bi-person"></i> Crear cuenta
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https//:gmail.com" class="text-dark">
+                                <i class="bi bi-envelope-fill"></i> Envíanos un correo
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="terminos.html" class="text-dark">
+                                <i class="bi bi-file-text-fill"></i> Términos y condiciones
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Dirección y redes sociales</h5>
+                    <hr class="mb-4">
+                    <ul class="list-unstyled">
+                        <li class="footer_text">
+                            <a href="https://Instagram.com" class="text-dark">
+                                <i class="fab fa-instagram"></i> Instagram
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https://facebook.com" class="text-dark">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https://whatsapp.com" class="text-dark">
+                                <i class="fab fa-whatsapp"></i> Whatsapp
+                            </a>
+                        </li>
+                        <li class="footer_text">
+                            <a href="https://maps.app.goo.gl/u9yxFQZPbebmVh2B9" class="text-dark">
+                                <i class="fas fa-map-marker-alt"></i> Moneda 134, Santiago
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--  <hr>
+    <a href="{% url 'poblar' %}" clas="btn btn-danger">POBLAR BASE DE DATOS CON REGISTROS PARA PRUEBAS</a>
+  </footer>
+-->
+
+
+  <!-- BLOQUE DE SCRIPTS COMPARTIDOS POR TODAS LAS PAGINAS -->
+  <div class="pagelayout-4">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="{% static 'core/js/script.js' %}"></script>
+    <script type="text/javascript" src="{% static 'core/js/premio.js' %}"></script>
+
+  <!-- <div class="instrucciones-para-el-alumno">
+      INSTRUCCIONES PARA EL ALUMNO (ELIMINALO DESPUES DE LEERLO):<br>
+          - Pone aquí tus javascripts globales que compartan todas tus páginas
+    </div>--> 
+
+  <!-- BLOQUE DE SCRIPTS PERSONALIZADOS DE CADA PAGINA DEL SITIO WEB -->
+  <div class="pagelayout-5">
+    {% block script %}
+        
+    {% endblock script %}
+  </div>
+
+  <!-- BLOQUE PARA MOSTRAR MENSAJES EMERGENTES USANDO "SweetAlert2", COMPARTIDO POR TODAS LAS PAGINAS -->
+   <div class="pagelayout-6">
+    {% include 'common/mostrar_mensajes.html' %}
+  </div>
+</body>
+</html>
